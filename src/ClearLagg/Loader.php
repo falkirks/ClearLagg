@@ -10,9 +10,10 @@ use pocketmine\plugin\PluginBase;
 class Loader extends PluginBase{
     protected $exemptedEntities = [];
     public function onEnable(){
-
+        $this->getServer()->getCommandMap()->register("clearlagg", new ClearLaggCommand($this));
+        $this->getLogger()->info("Enabled.");
     }
-
+    
     public function onDisable(){
 
     }

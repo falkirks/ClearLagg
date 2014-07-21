@@ -4,9 +4,11 @@ namespace ClearLagg;
 use pocketmine\entity\DroppedItem;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Human;
+use pocketmine\entity\Creature;
 use pocketmine\plugin\PluginBase;
 
 class Loader extends PluginBase{
+    protected $exemptedEntities = [];
     public function onEnable(){
 
     }
@@ -23,29 +25,29 @@ class Loader extends PluginBase{
      *  /_/    \_\_|   |_____|
      */
 
-    protected $exemptedEntities = [];
-
     public function removeEntities(){
         foreach($this->getServer()->getLevels() as $level){
             foreach($level->getEntities() as $entity){
-                if(!$entity instanceof Human && !$this->isEntityExempted($entity)){
+                if(!($entity instanceof Human) && !$this->isEntityExempted($entity) && !($entity instanceof Creature)){
                     $entity->close();
                 }
             }
         }
     }
-
-    public function exemptEntity(Entity $entity){
-        array_push($this->exemptedEntities, $entity->getID());
-    }
-
-    public function isEntityExempted(Entity $entity){
-        $r = false;
-        foreach($this->exemptedEntities as $e){
-            if($entity->getID() === $e){
-                $r = true;
+    public function removeMobs(){
+        foreach($this->getServer()->getLevels() as $level){
+            foreach($level->getEntities() as $entity){
+                if(!$this->isEntityExempted($entity) && $entity instanceof Creature){
+                    $entity->close();
+                }
             }
         }
-        return $r;
+    }
+    public function exemptEntity(Entity $entity){
+        $this->exemptedEntities[$entity->getID()] = $entity;
+    }
+    
+    public function isEntityExempted(Entity $entity){
+        return isset($this->exemptedEntities[$entity]);
     }
 } 

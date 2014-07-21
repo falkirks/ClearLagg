@@ -1,7 +1,6 @@
 <?php
-namespace ClearLagg;
+namespace clearlagg;
 
-use pocketmine\entity\DroppedItem;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Creature;
 use pocketmine\entity\Human;
@@ -18,37 +17,71 @@ class Loader extends PluginBase{
 
     }
 
-    /**           _____ _____
-     *      /\   |  __ \_   _|
-     *     /  \  | |__) || |
-     *    / /\ \ |  ___/ | |
-     *   / ____ \| |    _| |_
-     *  /_/    \_\_|   |_____|
+    /**
+     * @return int
      */
-
     public function removeEntities(){
+        $i = 0;
         foreach($this->getServer()->getLevels() as $level){
             foreach($level->getEntities() as $entity){
                 if(!$this->isEntityExempted($entity) && !($entity instanceof Creature)){
                     $entity->close();
+                    $i++;
                 }
             }
         }
+        return $i;
     }
+
+    /**
+     * @return int
+     */
     public function removeMobs(){
+        $i = 0;
         foreach($this->getServer()->getLevels() as $level){
             foreach($level->getEntities() as $entity){
                 if(!$this->isEntityExempted($entity) && $entity instanceof Creature && !($entity instanceof Human)){
                     $entity->close();
+                    $i++;
                 }
             }
         }
+        return $i;
     }
+
+    /**
+     * @return array
+     */
+    public function getEntityCount(){
+        $ret = [0, 0, 0];
+        foreach($this->getServer()->getLevels() as $level){
+            foreach($level->getEntities() as $entity){
+                if($entity instanceof Human){
+                    $ret[0]++;
+                }
+                elseif($entity instanceof Creature){
+                    $ret[1]++;
+                }
+                else{
+                    $ret[2]++;
+                }
+            }
+        }
+        return $ret;
+    }
+
+    /**
+     * @param Entity $entity
+     */
     public function exemptEntity(Entity $entity){
         $this->exemptedEntities[$entity->getID()] = $entity;
     }
-    
+
+    /**
+     * @param Entity $entity
+     * @return bool
+     */
     public function isEntityExempted(Entity $entity){
-        return isset($this->exemptedEntities[$entity]);
+        return isset($this->exemptedEntities[$entity->getID()]);
     }
 } 

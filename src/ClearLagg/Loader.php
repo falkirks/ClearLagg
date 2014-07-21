@@ -3,7 +3,6 @@ namespace ClearLagg;
 
 use pocketmine\entity\DroppedItem;
 use pocketmine\entity\Entity;
-use pocketmine\entity\Human;
 use pocketmine\entity\Creature;
 use pocketmine\plugin\PluginBase;
 
@@ -28,7 +27,7 @@ class Loader extends PluginBase{
     public function removeEntities(){
         foreach($this->getServer()->getLevels() as $level){
             foreach($level->getEntities() as $entity){
-                if(!($entity instanceof Human) && !$this->isEntityExempted($entity) && !($entity instanceof Creature)){
+                if(!$this->isEntityExempted($entity) && !($entity instanceof Creature)){
                     $entity->close();
                 }
             }

@@ -1,15 +1,14 @@
 name: ClearLagg
 main: ClearLagg\Loader
 version: 1.0.0
-api: 1.0.0
+api: [1.0.0]
 website: https://github.com/LegendOfMCPE/ClearLagg
-
 permissions:
     clearlagg:
         default: op
-        description: "Acces any ClearLagg features"
+        description: "Access any ClearLagg features"
         children:
             clearlagg.command:
                 default: op
-                description: "Acces to the command feature"
+                description: "Access to the command feature"
                 children: []

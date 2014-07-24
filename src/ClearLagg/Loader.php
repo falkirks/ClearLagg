@@ -12,10 +12,6 @@ class Loader extends PluginBase{
         $this->getServer()->getCommandMap()->register("clearlagg", new ClearLaggCommand($this));
         $this->getLogger()->info("Enabled.");
     }
-    
-    public function onDisable(){
-
-    }
 
     /**
      * @return int

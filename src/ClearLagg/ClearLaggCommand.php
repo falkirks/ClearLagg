@@ -8,7 +8,7 @@ use pocketmine\command\PluginIdentifiableCommand;
 class ClearLaggCommand extends Command implements PluginIdentifiableCommand{
     public $api;
     public function __construct(Loader $plugin){
-        parent::__construct($plugin, "", "", "", ["lagg"]);
+        parent::__construct("clearlagg", "Clear the lag!", "/clearlagg help", ["lagg"]);
         $this->setPermission("clearlagg.command");
         $this->api = $plugin;
     }

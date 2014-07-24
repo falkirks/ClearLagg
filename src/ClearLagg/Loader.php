@@ -1,16 +1,19 @@
 <?php
 namespace clearlagg;
 
+use pocketmine\entity\DroppedItem;
 use pocketmine\entity\Entity;
 use pocketmine\entity\Creature;
 use pocketmine\entity\Human;
 use pocketmine\plugin\PluginBase;
+use pocketmine\utils\TextFormat;
 
 class Loader extends PluginBase{
     protected $exemptedEntities = [];
+
     public function onEnable(){
         $this->getServer()->getCommandMap()->register("clearlagg", new ClearLaggCommand($this));
-        $this->getLogger()->info("Enabled.");
+        $this->getLogger()->info(TextFormat::YELLOW . "Enabling...");
     }
 
     /**
@@ -37,6 +40,22 @@ class Loader extends PluginBase{
         foreach($this->getServer()->getLevels() as $level){
             foreach($level->getEntities() as $entity){
                 if(!$this->isEntityExempted($entity) && $entity instanceof Creature && !($entity instanceof Human)){
+                    $entity->close();
+                    $i++;
+                }
+            }
+        }
+        return $i;
+    }
+
+    /**
+     * @return int
+     */
+    public function removeDroppedItems(){
+        $i = 0;
+        foreach($this->getServer()->getLevels() as $level){
+            foreach($level->getEntities() as $entity){
+                if(!$this->isEntityExempted($entity) && ($entity instanceof DroppedItem)){
                     $entity->close();
                     $i++;
                 }

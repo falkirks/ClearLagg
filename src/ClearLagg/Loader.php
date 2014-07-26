@@ -13,7 +13,7 @@ class Loader extends PluginBase{
 
     public function onEnable(){
         $this->getServer()->getCommandMap()->register("clearlagg", new ClearLaggCommand($this));
-        $this->getLogger()->info(TextFormat::YELLOW . "Enabling...");
+        $this->getLogger()->info(TextFormat::GREEN . "Enabled.");
     }
 
     /**
